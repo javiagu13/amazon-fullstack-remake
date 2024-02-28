@@ -10,8 +10,6 @@ function Subtotal() {
   return (
     <div className='subtotal'>
 
-        renderText={(value)=> (
-            <>
                 <p>
                     Subtotal ({basket?.length} items): <strong>{getBasketTotal(basket)} $</strong>
                 </p>
@@ -19,8 +17,6 @@ function Subtotal() {
                     <input type='checkbox'/>
                         This order contains a gift
                 </small>
-            </>
-        )}
 
         <button>Proceed to Checkout</button>
     </div>

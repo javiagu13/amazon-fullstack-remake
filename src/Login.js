@@ -3,9 +3,9 @@ import "./Login.css"
 import { Link } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import { useState } from 'react';
-import { auth } from './firebase';
+import { db, auth } from './firebase';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
- 
+
 function Login() {
 
     const [email, setEmail] = useState('');
