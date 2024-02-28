@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import { useState } from 'react';
 import { db, auth } from './firebase';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth';
 
 function Login() {
 
@@ -19,8 +19,8 @@ function Login() {
     
     const register = e => {
         e.preventDefault()
-        
-        auth.createUserWithEmailAndPassword(email, password).then((auth) => {
+
+        createUserWithEmailAndPassword(auth, email, password).then((auth) => {
             console.log("auth")
             console.log("User created successfully")
         }).catch(error => alert(error.message))
