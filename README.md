@@ -2,6 +2,11 @@
 
 https://db-33fb1.web.app
 
+### To Do
+Make responsive css for phones 
+1. problem with upper nav going right (nav should dissapear except search and have a drawer)
+2. products not fitting screen properly
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
