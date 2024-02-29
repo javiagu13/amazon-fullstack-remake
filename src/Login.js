@@ -1,20 +1,25 @@
 import React from 'react'
 import "./Login.css"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import { useState } from 'react';
 import { db, auth } from './firebase';
-import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth';
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth} from 'firebase/auth';
 
 function Login() {
-
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const signIn = e => {
         e.preventDefault()
-
-        // firebase
+        signInWithEmailAndPassword(auth, email, password).then((auth) => {
+            console.log("auth")
+            console.log("User logged in successfully")
+            if (auth){
+                navigate('/')
+            }
+        }).catch(error => alert(error.message))
     }
     
     const register = e => {
@@ -23,6 +28,9 @@ function Login() {
         createUserWithEmailAndPassword(auth, email, password).then((auth) => {
             console.log("auth")
             console.log("User created successfully")
+            if (auth){
+                navigate('/')
+            }
         }).catch(error => alert(error.message))
     }
 
