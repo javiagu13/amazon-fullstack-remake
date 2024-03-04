@@ -12,7 +12,7 @@ import Payment from './Payment';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
-const promise = loadStripe('pk_live_51Mu3hdDjKwlXRlnqLItXThspbu9JCV0cyH6TXsAjTVAYQeffNd2isEnz8NKUyVXbSlLlSaPM7JyQiAb40ORsvFAn00D237Jal0')
+const promise = loadStripe('pk_test_51Mu3hdDjKwlXRlnq6SYgfJVVV3vwjl2a1F1NGe4JMC7k7NC5GiwDCCQJgSFm6e8LglzoARQTWWEDhvCfC9O6engh00Fhj7Vp1l')
 
 function App() {
 

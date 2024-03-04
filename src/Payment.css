@@ -71,3 +71,7 @@
     flex: 0.8;
     padding-top: 10px;
 }
+
+.payment__priceContainer{
+    margin-top: 15px;
+}
