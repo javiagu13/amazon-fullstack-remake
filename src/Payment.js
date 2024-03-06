@@ -6,12 +6,14 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { getBasketTotal } from './reducer';
 import { useNavigate } from 'react-router-dom';
 import axios from './axios';
+import { db } from './firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 function Payment({id, image, title, price, rating}) {
 
   const [succeeded, setSucceeded] = useState(false);
   const [processing, setProcessing] = useState("");
-  const [{basket}, {user}, dispatch] = useStateValue();
+  const [{basket, user}, dispatch] = useStateValue();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -20,12 +22,14 @@ function Payment({id, image, title, price, rating}) {
   const [clientSecret, setClientSecret] = useState(true);
   const navigate = useNavigate();
 
+
+
   useEffect(() =>{
     const getClientSecret = async () =>{
         const response = await axios({
             method: 'post',
             // stripe expects in subunits: 10$=10000. that is the reason of * 100 operation
-            url:  `payments/create?total=${getBasketTotal(basket)*100}`,
+            url:  `payments/create?total=${(parseInt(getBasketTotal(basket)*100))}`,
         });
         setClientSecret(response.data.clientSecret);
     }
@@ -43,10 +47,31 @@ function Payment({id, image, title, price, rating}) {
                 card: elements.getElement(CardElement)
             }
         }).then(({ paymentIntent }) => {
+
+            console.log(basket)
+            //console.log(paymentIntent.amount)
+            //console.log(paymentIntent.created)
+            /*console.log(user)
+            await setDoc(doc(db, "users", user?.uid), {
+                basket: basket,
+                //amount: paymentIntent.amount,
+                //created: paymentIntent.created
+            });*/
+
+            const paymentRef = doc(db, "users", user?.uid, "orders", paymentIntent.id);
+            setDoc(paymentRef, {
+            basket: basket,
+            amount: paymentIntent.amount,
+            created: paymentIntent.created,
+            });
+
             setSucceeded(true);
             setError(null);
             setProcessing(false);
             //look if u can change by replace to avoid comming back
+            dispatch({
+                type: "EMPTY_BASKET"
+            })
             navigate("/")
         })
     }
@@ -99,7 +124,7 @@ function Payment({id, image, title, price, rating}) {
                         <form onSubmit={handleSubmit}>
                             <CardElement onChange={handleChange}/>
                             <div className='payment__priceContainer'>
-                                <strong>Order amount: ${getBasketTotal(basket)}</strong>
+                                <strong>Order amount: ${getBasketTotal(basket).toFixed(2)}</strong>
                                 <button disabled={processing || disabled || succeeded}>
                                     <span>
                                     {processing ? <p>Processing</p> : "Buy Now"}
